@@ -1,4 +1,4 @@
-import config_params as cfg
+import app.config_params as cfg
 
 
 def read_flat_text_file(filename_in):

@@ -1,6 +1,5 @@
-import config_params as cfg
-import load_word_list
-import pprint
+import app.config_params as cfg
+import app.load_word_list as load_word_list
 from string import ascii_uppercase
 
 
@@ -54,15 +53,3 @@ def main():
     )
 
     return scaled_letter_dict
-
-
-if __name__ == "__main__":
-    print(f"WordHAL v{cfg.ver_maj}.{cfg.ver_min}")
-    print("Letter Frequency Analyzer")
-    print("-"*30)
-
-    pp = pprint.PrettyPrinter(indent=4, sort_dicts=False)
-
-    scaled_letter_dict = main()
-
-    pp.pprint(scaled_letter_dict)
