@@ -21,18 +21,14 @@ def count_letters_in_word_list(list_in, letter_dict):
         count_letters_in_word(curr_word, letter_dict)
 
 
-def get_total_letter_count(letter_dict):
-    total_letters = 0
-    for currkey in letter_dict:
-        total_letters += letter_dict[currkey]
-
-    return total_letters
+def get_min_letter_count(letter_dict):
+    return min(list(letter_dict.values()))
 
 
-def scale_letter_count(letter_dict, total_letters):
+def normalize_letter_count(letter_dict, min_count):
     scaled_letter_dict = dict()
     for currkey in letter_dict:
-        scaled_letter_dict[currkey] = letter_dict[currkey] / total_letters
+        scaled_letter_dict[currkey] = round(letter_dict[currkey] / min_count, 2)
 
     scaled_letter_dict = dict(sorted(
         scaled_letter_dict.items(), 
@@ -42,14 +38,20 @@ def scale_letter_count(letter_dict, total_letters):
 
     return scaled_letter_dict
 
+def print_relative_freq_table(normalized_letter_dict):
+    print("| Letter | Proportion |")
+    print("| :---: | :---: |")
+    for currkey in normalized_letter_dict:
+        print(f"| {currkey} | {normalized_letter_dict[currkey]} |")
+
 
 def main():
     word_list = load_word_list.main(cfg.filename_wordlist, cfg.ftype_wordlist)
     letter_dict = create_letter_dict()
     count_letters_in_word_list(word_list, letter_dict)
-    scaled_letter_dict = scale_letter_count(
+    normalized_letter_dict = normalize_letter_count(
         letter_dict, 
-        get_total_letter_count(letter_dict)
+        get_min_letter_count(letter_dict)
     )
 
-    return scaled_letter_dict
+    return normalized_letter_dict

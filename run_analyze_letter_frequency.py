@@ -6,5 +6,5 @@ import pprint
 if __name__ == "__main__":
     app.disp_intro_string.main("Letter Frequency Analyzer")
     pp = pprint.PrettyPrinter(indent=4, sort_dicts=False)
-    scaled_letter_dict = app.analyze_letter_frequency.main()
-    pp.pprint(scaled_letter_dict)
+    normalized_letter_dict = app.analyze_letter_frequency.main()
+    pp.pprint(normalized_letter_dict)
