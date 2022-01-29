@@ -31,3 +31,26 @@ Using the list of five letter words, the [run_analyze_letter_frequency.py](https
 | N | 24.25 | G | 12.81 | |
 
 Several letters, including "S" and "O" have a different relative frequency in the list of five letter words than the complete list of words in the English language.
+
+## Selecting a First Word
+
+When a word is chosen in Wordle any matching letters to the target word are highlighted, helping the player determine the target word.  A good first word in Wordle would be chosen to maximize the probability of matching the letters in the target word.  A secondary benefit is that any letters that don't match can be excluded from consideration for the target word.  Therefore a starting word should be chosen to maximize the use of frequently occurring characters while avoiding duplicates as duplicate letters give comparatively less information.
+
+The following procedure was used to rank words from the overall word list in order of their usfulness as starting words:
+- Compute the frequency of each letter
+- Iterate through the overall list of words
+  - Exclude any words that have duplicate letters
+  - Sum the relative frequencies of the letters in the word
+- The resulting weighted list of words is then sorted in descending order of the sum of relative frequencies and the top N choices are displayed
+
+The resulting list of top 10 words with the relative weighting are:
+1. arose: 230.47
+2. raise: 224.38
+3. arise: 224.38
+4. aloes: 224.35
+5. stoae: 224.34
+6. laser: 224.26
+7. earls: 224.26
+8. reals: 224.26
+9. tears: 224.25
+10. rates: 224.25

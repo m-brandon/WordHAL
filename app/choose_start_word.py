@@ -22,7 +22,7 @@ def get_word_scores(list_in, letter_freq_dict):
         word_score = 0
         for curr_letter in list(curr_word):
             word_score += letter_freq_dict[curr_letter.upper()]
-        scores_out[curr_word] = word_score
+        scores_out[curr_word] = round(word_score, 2)
 
     scores_out = dict(sorted(
         scores_out.items(), 
