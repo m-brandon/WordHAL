@@ -5,5 +5,6 @@ filename_wordlist = "five-letter-word-list.txt"
 ftype_wordlist = "text"
 
 num_letters = 5
+max_num_guesses = 6
 
 f_debug_console = True

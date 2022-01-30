@@ -13,4 +13,4 @@ if __name__ == "__main__":
     curr_puzzle = WordlePuzzle(word_list, f_debug_console=cfg.f_debug_console)
 
     curr_puzzle.evaluate_guess("HELLO")
-
+    curr_puzzle.display_solution()
