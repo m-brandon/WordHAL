@@ -32,6 +32,42 @@ def merge_letter_in_wrong_pos(prev_dict, new_dict):
     return dict_out
 
 
+def check_candidate_for_correct_letters(correct_letters, candidate_word):
+    f_word_passes = True
+    for in_letter in range(cfg.num_letters):
+        if correct_letters[in_letter]:
+            if candidate_word[in_letter] != correct_letters[in_letter]:
+                f_word_passes = False
+                break
+
+    return f_word_passes
+
+
+def check_candidate_for_incorrect_letters(incorrect_letters, candidate_word):
+    f_word_passes = True
+    for in_letter in range(cfg.num_letters):
+        if candidate_word[in_letter] in incorrect_letters:
+            f_word_passes = False
+            break
+
+    return f_word_passes
+
+
+def check_candidate_for_wrongpos_letters(letters_wrongpos, candidate_word):
+    f_word_passes = True
+    for currkey in letters_wrongpos:
+        if not currkey in candidate_word:
+            f_word_passes = False
+            break
+        else:
+            for in_pos in letters_wrongpos[currkey]:
+                if candidate_word[in_pos] == currkey:
+                    f_word_passes = False
+                    break
+
+    return f_word_passes
+
+
 class WordlePlayer:
     def __init__(
         self,
@@ -68,6 +104,8 @@ class WordlePlayer:
         while self.guesses < cfg.max_num_guesses:
             curr_guess = self.select_new_guess()
             self.execute_guess(curr_guess)
+            if all(self.correct_letters):
+                break
             if self.f_debug_console:
                 print("-"*20)
                 print(f"GUESS NUMBER {self.guesses}")
@@ -79,11 +117,13 @@ class WordlePlayer:
                 print("-"*20)
 
         if all(self.correct_letters):
-            print("SUCCESS:  Word was correctly guessed")
+            f_success = True
+            num_turns = self.guesses
         else:
-            print("FAILURE:  Word was not correctly guessed")
-        print(f"Correct letters = {self.correct_letters}")
-        self.curr_puzzle.display_solution()
+            f_success = False
+            num_turns = 0
+
+        return f_success, num_turns
 
     def execute_guess(self, curr_guess):
         self.guesses += 1
@@ -107,4 +147,34 @@ class WordlePlayer:
             )
 
     def select_new_guess(self):
-        return self.word_list[randint(0, len(self.word_list)-1)].upper()
+        candidate_word_list = []
+
+        for curr_word in self.word_list:
+            f_correct_pass = check_candidate_for_correct_letters(
+                self.correct_letters, 
+                curr_word
+            )
+
+            f_incorrect_pass = check_candidate_for_incorrect_letters(
+                self.incorrect_letters, 
+                curr_word
+            )
+            
+            f_wrong_pos_pass = check_candidate_for_wrongpos_letters(
+                self.letters_in_wrong_pos, 
+                curr_word
+            )
+
+            if f_correct_pass and f_incorrect_pass and f_wrong_pos_pass:
+                candidate_word_list.append(curr_word)
+
+        if not candidate_word_list:
+            raise ValueError("Failed to find matching word")
+
+        in_rand_guess = randint(0, len(candidate_word_list)-1)
+        if self.f_debug_console:
+            print(f"Length of candidate word list:  {len(candidate_word_list)}")
+            print(f"Index of random guess:  {in_rand_guess}")
+        new_guess = candidate_word_list[in_rand_guess]
+
+        return new_guess

@@ -14,5 +14,10 @@ if __name__ == "__main__":
     curr_player = WordlePlayer(
         word_list,
         f_debug_puzzle=False,
-        f_debug_console=False)
-    curr_player.auto_play()
+        f_debug_console=True)
+    f_success, num_turns = curr_player.auto_play()
+
+    if f_success:
+        print(f"SUCCESS, got the word in {num_turns} turns")
+    else:
+        print("FAILED")
