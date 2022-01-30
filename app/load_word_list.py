@@ -5,7 +5,7 @@ def read_flat_text_file(filename_in):
     word_list = []
     with open(filename_in, "r") as fid_in:
         for currword in fid_in:
-            word_list.append(currword.strip())
+            word_list.append(currword.strip().upper())
 
     return word_list
 
