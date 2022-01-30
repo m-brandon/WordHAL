@@ -36,13 +36,11 @@ class WordlePlayer:
     def __init__(
         self,
         word_list, 
-        f_auto_play=False,
         f_debug_puzzle=False, 
         debug_solution="", 
         f_debug_console=False
     ):
         self.word_list = word_list
-        self.f_auto_play = f_auto_play
         self.f_debug_console = f_debug_console
 
         if f_debug_puzzle:
@@ -66,24 +64,26 @@ class WordlePlayer:
         self.incorrect_letters = []
         self.letters_in_wrong_pos = dict()
 
-        if self.f_auto_play:
-            while self.guesses < cfg.max_num_guesses:
-                curr_guess = self.select_new_guess()
-                self.execute_guess(curr_guess)
-                if self.f_debug_console:
-                    print("-"*20)
-                    print(f"GUESS NUMBER {self.guesses}")
-                    print(f"Current Guess: {curr_guess}")
-                    self.curr_puzzle.display_solution()
-                    print(f"Correct Letters: {self.correct_letters}")
-                    print(f"Incorrect Letters: {self.incorrect_letters}")
-                    print(f"Letters in Wrong Position: {self.letters_in_wrong_pos}")
-                    print("-"*20)
+    def auto_play(self):
+        while self.guesses < cfg.max_num_guesses:
+            curr_guess = self.select_new_guess()
+            self.execute_guess(curr_guess)
+            if self.f_debug_console:
+                print("-"*20)
+                print(f"GUESS NUMBER {self.guesses}")
+                print(f"Current Guess: {curr_guess}")
+                self.curr_puzzle.display_solution()
+                print(f"Correct Letters: {self.correct_letters}")
+                print(f"Incorrect Letters: {self.incorrect_letters}")
+                print(f"Letters in Wrong Position: {self.letters_in_wrong_pos}")
+                print("-"*20)
 
-            if all(self.correct_letters):
-                print("SUCCESS:  Word was correctly guessed")
-            else:
-                print("FAILURE:  Word was not correctly guessed")
+        if all(self.correct_letters):
+            print("SUCCESS:  Word was correctly guessed")
+        else:
+            print("FAILURE:  Word was not correctly guessed")
+        print(f"Correct letters = {self.correct_letters}")
+        self.curr_puzzle.display_solution()
 
     def execute_guess(self, curr_guess):
         self.guesses += 1

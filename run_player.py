@@ -13,6 +13,6 @@ if __name__ == "__main__":
 
     curr_player = WordlePlayer(
         word_list,
-        f_auto_play=True,
         f_debug_puzzle=False,
         f_debug_console=False)
+    curr_player.auto_play()
