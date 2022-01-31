@@ -1,4 +1,4 @@
-from inspect import currentframe
+import app.analyze_letter_frequency
 import app.config_params as cfg
 from app.wordle_puzzle import WordlePuzzle
 from random import randint
@@ -68,6 +68,27 @@ def check_candidate_for_wrongpos_letters(letters_wrongpos, candidate_word):
     return f_word_passes
 
 
+def select_word_by_letter_freq(word_list_in, letter_freq):
+    curr_max_score = 0
+    curr_best_word = ""
+
+    for curr_word in word_list_in:
+        curr_score = sum([letter_freq[x] for x in curr_word])
+        if curr_score > curr_max_score:
+            curr_max_score = curr_score
+            curr_best_word = curr_word
+    
+    if not curr_best_word:
+        raise ValueError("Didn't select a new word")
+
+    return curr_best_word
+
+
+def select_random_word(word_list_in):
+    in_rand_guess = randint(0, len(word_list_in)-1)
+    return word_list_in[in_rand_guess]
+
+
 class WordlePlayer:
     def __init__(
         self,
@@ -77,6 +98,7 @@ class WordlePlayer:
         f_debug_console=False
     ):
         self.word_list = word_list
+        self.letter_frequency = app.analyze_letter_frequency.main()
         self.f_debug_console = f_debug_console
 
         if f_debug_puzzle:
@@ -171,10 +193,8 @@ class WordlePlayer:
         if not candidate_word_list:
             raise ValueError("Failed to find matching word")
 
-        in_rand_guess = randint(0, len(candidate_word_list)-1)
-        if self.f_debug_console:
-            print(f"Length of candidate word list:  {len(candidate_word_list)}")
-            print(f"Index of random guess:  {in_rand_guess}")
-        new_guess = candidate_word_list[in_rand_guess]
+        new_guess = select_random_word(
+            candidate_word_list
+        )
 
         return new_guess
